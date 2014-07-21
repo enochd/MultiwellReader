@@ -14,8 +14,11 @@ from scipy.constants import physical_constants
 
 #def loadData(species, path):
 def loadData(path, species):
-    #path  = '/home/enoch/MW_comparisons_cantherm/ethoxy/RRHO/0.1.out'
-    #species = 'ch3ch2o'
+"""
+From a MW output file of a pdep calculation located at 'path'
+plot the 'species' concn as a fucntion of time and extrapolate 
+the phenomenological rate coefficient. 
+"""
     try:
         f = open(path, 'r')
     except IndexError:
@@ -89,11 +92,9 @@ def loadData(path, species):
         print "s is " + str(s) 
         print "MW took " + str(cpu) + 'hrs'
         y = intercept*np.exp(k * Time)
-        #plt.semilogy(Time,y, 'r', linewidth=2.0)
-        #print y
+
     #TO DO LIST:   
-    #IF r2 > 0.99, save rate to output:  
-    # remove first few points 
+    # remove first few points (where steady state conditions have not yet been achieved)
     # save branching to output  
     fig = plt.figure()
     fig.suptitle(str(species) + ' decomposition', fontsize=20, fontweight='bold', style='italic')
@@ -116,7 +117,6 @@ def loadData(path, species):
     plt.show() #must come AFTER savefig
     
     print fname
-
     return T, P, k            
 
 
@@ -169,41 +169,7 @@ def obtainBranching(conc, time):
     Time = np.array(time)    
     
     pass
-'''            
-fig = pylab.figure(figsize=(6,5))
-Vlist_data=Vlist_data/1000/4.184  # convert from J/mol to kcal/mol
-pylab.plot(angle, Vlist_data, 'ok')
-#linespec = '-r' if rotor is cosineRotor else '--r'
-#pylab.plot(phi, Vlist_cosine / 4184., linespec)
-linespec = '-b' 
-pylab.plot(phi, Vlist_fourier/4.184, linespec)  # convert to kcal/mol
-pylab.legend(['scan', 'fourier'], loc=1)  #need to add in the cosine fit too....ugh
-pylab.xlim(0, 2*constants.pi)
-pylab.xlabel('Angle, radians')
-pylab.ylabel('Potential (kcal/mol)')
-pylab.title(path[50:])#.format(species.label, rotorIndex+1))
-pylab.show()    
 
-errorbar(x, y, yerr=None, xerr=None,
-         fmt='-', ecolor=None, elinewidth=None, capsize=3,
-         barsabove=False, lolims=False, uplims=False,
-         xlolims=False, xuplims=False, errorevery=1,
-         capthick=None)
-'''
-#!/usr/bin/env python
-'''When the import mymodule statement is executed, the module mymodule is searched in a given list of directories. 
-This list includes a list of installation-dependent default path (e.g., /usr/lib/python) as well as the list of 
-directories specified by the environment variable PYTHONPATH.
-'''
-
-#RMG imports...
-#from rmgpy.kinetics.arrhenius import Arrhenius, ArrheniusEP, PDepArrhenius, MultiArrhenius, MultiPDepArrhenius
-#import rmgpy.constants as constants
-###############################
-#put global variablees here, outside functions. They cannot be modified outside functions
-
-###############################
-#remember that what is inside the function declaration are INPUTS
 def getRateCoefficient(Tlist,Plist,kexplist):
     """
     Test the MultiPDepArrhenius.getRateCoefficient() method.
@@ -280,19 +246,4 @@ def fitToData(Tlist, klist):
         plt.semilogy(1000./Tlist,y2)
         plt.grid(True)
     return    b, x, Apre, n , Ea, y, y2
-'''
-fitToData(Tlist,klist)
-if Tlist.size == klist.size:
-#    plt.figure(1)
-#    plt.plot(1./Tlist,np.log(klist),'o', label = 'original data)')
-    
-    
-    #plt.ylim([str(min(klist)),str(max(klist))])
-    #plt.xlim([str(min(Tlist)),str(max(Tlist))])
-    plt.xlabel('temperature, K')
-    #plt.plot(Tlist,, 'o' label='orginal data, markersize=10')
-    plt.show()
-    print "T and k array sizes match"
-else:
-    print "T and k array sizes do not match"
-'''
+
